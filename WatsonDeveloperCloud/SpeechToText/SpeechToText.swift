@@ -171,4 +171,28 @@ public class SpeechToText: WatsonService {
         audioStreamer.startRecognitionRequest()
         return (audioStreamer.createTranscriptionOutput(), audioStreamer.stopRecognitionRequest)
     }
+    
+    /**
+     Create an `AVCaptureAudioDataOutput` that streams audio to the Speech to Text service.
+     
+     - parameter settings: The configuration for this transcription request.
+     - parameter failure: A function executed whenever an error occurs.
+     - parameter success: A function executed with all transcription results whenever
+     a final or interim transcription is received.
+     - returns: SpeechToTextAudioStreamer that can do transcription.
+     */
+    public func createAudioStreamer(
+        settings: SpeechToTextSettings,
+        failure: (NSError -> Void)? = nil,
+        success: [SpeechToTextResult] -> Void)
+        -> SpeechToTextAudioStreamer?
+    {
+        guard let audioStreamer = SpeechToTextAudioStreamer(
+            authStrategy: authStrategy,
+            settings: settings,
+            failure: failure,
+            success: success) else { return nil }
+        audioStreamer.startRecognitionRequest()
+        return audioStreamer
+    }
 }

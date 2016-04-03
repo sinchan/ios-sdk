@@ -214,4 +214,13 @@ class SpeechToTextAudioStreamer: NSObject, AVCaptureAudioDataOutputSampleBufferD
         output.setSampleBufferDelegate(self, queue: queue)
         return output
     }
+    
+    /**
+     Extends the session by sending the service a JSON text message with the action key set to the value no-op:{"action": "no-op"}. This message touches the session and resets the timeout to keep the connection alive.
+
+     */
+    func sendKeepConnectionAliveMessage() {
+        let noOpMessage = "{\"action\": \"no-op\"}"
+        socket?.writeString(noOpMessage)
+    }
 }
